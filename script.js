@@ -1,5 +1,19 @@
-// ========== script.js (كامل وبدون تكرار) ==========
+// السطر 1
+// ========== script.js ==========
 
+// السطر 4: رابط موقع اللعبة الرسمي بعد التحديث
+// 🔗 https://ze828282o-afk.github.io/-90/
+
+// 1️⃣ إعدادات الاتصال بـ Supabase (ضع روابط مشروعك هنا)
+const SUPABASE_URL = "YOUR_SUPABASE_URL"; 
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// بيانات Google OAuth الخاصة بك والمربوطة بالرابط الجديد
+const GOOGLE_CLIENT_ID = "69308373921-j6vv5373sseu2cs1freulromvu2d2k2t.apps.googleusercontent.com";
+
+let currentUser = null; 
+// السطر 12
 // 1. قاعدة الأسئلة الضخمة (+110 سؤال) مصنفة تصاعدياً حسب المستويات والنقاط
 const questionsDatabase = [
   // المستوى 0 (مبتدئ)
