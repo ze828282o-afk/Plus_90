@@ -1,8 +1,8 @@
-// ========== script.js ==========
-// قاعدة الأسئلة الكاملة (100+ سؤال) موزعة على 5 مستويات
+// ========== script.js - النسخة النهائية (من غير Supabase) ==========
+
+// ===== قاعدة الأسئلة الكاملة (125+ سؤال) =====
 const questionsDatabase = [
   // ========== المستوى 0 (مبتدئ) - نقاط 0-199 ==========
-  // الأسئلة من 1 إلى 25
   { text: "في أي عام أُقيمت أول بطولة لكأس العالم؟", options: ["1928", "1930", "1934", "1924"], correct: 1, minLevel: 0 },
   { text: "أي دولة استضافت وفازت بأول نسخة من كأس العالم؟", options: ["البرازيل", "إيطاليا", "الأوروغواي", "الأرجنتين"], correct: 2, minLevel: 0 },
   { text: "ما هي النسختان اللتان أُلغيَتا بسبب الحرب العالمية الثانية؟", options: ["1938 و1942", "1942 و1946", "1946 و1950", "1934 و1938"], correct: 1, minLevel: 0 },
@@ -28,9 +28,8 @@ const questionsDatabase = [
   { text: "من صاحب الرقم القياسي في تسجيل أكبر عدد من الأهداف في نسخة واحدة؟", options: ["جاست فونتين (13 هدفاً - 1958)", "بيليه (10 أهداف)", "رونالدو (8 أهداف - 2002)", "مودريتش (6 أهداف)"], correct: 0, minLevel: 0 },
   { text: "ما هي أكبر نتيجة (فوز بفارق كبير) في تاريخ كأس العالم؟", options: ["10-1", "9-0", "7-1", "8-0"], correct: 0, minLevel: 0 },
   { text: "من هو أصغر لاعب يشارك في مباريات كأس العالم على الإطلاق؟", options: ["بيليه (17 عاماً)", "نورمان وايتسايد (17 عاماً)", "مبابي (18 عاماً)", "أوين (18 عاماً)"], correct: 1, minLevel: 0 },
-
+  
   // ========== المستوى 1 (متوسط) - نقاط 200-399 ==========
-  // الأسئلة من 26 إلى 50
   { text: "من هو أكبر لاعب يشارك في مباريات كأس العالم؟", options: ["دينو زوف (إيطاليا - 40 عاماً)", "شيلتون (المكسيك - 43 عاماً)", "روجيه ميلا (الكاميرون - 42 عاماً)", "فان در سار (هولندا)"], correct: 1, minLevel: 200 },
   { text: "كم عدد الأهداف التي سجلها رونالدو (البرازيلي) في جميع مشاركاته؟", options: ["12 هدفاً", "15 هدفاً", "17 هدفاً", "19 هدفاً"], correct: 1, minLevel: 200 },
   { text: "من هو الهداف التاريخي لمنتخب إنجلترا في المونديال؟", options: ["هاري كين", "غاري لينيكر", "بوبي تشارلتون", "جيرارد"], correct: 1, minLevel: 200 },
@@ -55,9 +54,8 @@ const questionsDatabase = [
   { text: "من هو الحارس الذي تصدى لأكثر من 4 ركلات ترجيح في مباراة واحدة؟", options: ["ريكاردو (البرتغال)", "دافيد دي خيا", "كاسياس", "نافاس"], correct: 0, minLevel: 200 },
   { text: "أي لاعب شهير اعتزل دولياً بعد نهائي 2006؟", options: ["رونالدو", "زين الدين زيدان", "بكنباور", "مالديني"], correct: 1, minLevel: 200 },
   { text: "ما هي نتيجة مباراة نهائي 1998 بين فرنسا والبرازيل؟", options: ["1-0", "2-1", "3-0", "3-2"], correct: 2, minLevel: 200 },
-
+  
   // ========== المستوى 2 (خبير) - نقاط 400-699 ==========
-  // الأسئلة من 51 إلى 75
   { text: "من سجل هدف التتويج للبرازيل في نهائي 2002؟", options: ["ريفالدو", "رونالدو", "رونالدينيو", "كافو"], correct: 1, minLevel: 400 },
   { text: "ما هو الفريق الذي تغلب على الأرجنتين في ربع نهائي 2022 بركلات الترجيح؟", options: ["البرازيل", "هولندا", "كرواتيا", "البرتغال"], correct: 1, minLevel: 400 },
   { text: "متى سجل زيدان هدفه الشهير بـ 'المقصية' في النهائي؟", options: ["1998", "2000", "2006", "2002"], correct: 3, minLevel: 400 },
@@ -83,9 +81,8 @@ const questionsDatabase = [
   { text: "من هو مغني أغنية 1998 (لاكوبا دي لا فيدا)؟", options: ["ريكي مارتن", "إنريكي إغليسياس", "جينيفر لوبيز", "مارك أنتوني"], correct: 0, minLevel: 400 },
   { text: "ما هي الكرة الرسمية التي استُخدمت في مونديال 2022؟", options: ["أديداس تيلستار", "أديداس برازوكا", "أديداس الرحلة (Al Rihla)", "أديداس جابولاني"], correct: 2, minLevel: 400 },
   { text: "ما هي الكرة التي استُخدمت في مونديال 2018؟", options: ["تلستار 18", "برازوكا", "جابولاني", "تانجو"], correct: 0, minLevel: 400 },
-
+  
   // ========== المستوى 3 (أسطورة) - نقاط 700-999 ==========
-  // الأسئلة من 76 إلى 100
   { text: "كم عدد الحكام الذين يديرون مباراة واحدة حالياً (مع تقنية الفيديو)؟", options: ["3 حكام", "4 حكام", "5 حكام", "6 حكام"], correct: 3, minLevel: 700 },
   { text: "متى أُدخل نظام تقنية الخط (VAR) في كأس العالم؟", options: ["2014", "2018", "2022", "2010"], correct: 1, minLevel: 700 },
   { text: "ما هي أول بطولة استخدمت نظام 'التسلل الآلي' (SAOT)؟", options: ["2018", "2022", "2026", "2014"], correct: 1, minLevel: 700 },
@@ -111,9 +108,8 @@ const questionsDatabase = [
   { text: "من هو اللاعب الذي سجل هدف الفوز لمنتخب بنما في التصفيات ليُهديهم أول تأهل لهم في 2018؟", options: ["رومان توريس", "جابرييل غوميز", "لويس تيخادا", "فيدل إسكوبار"], correct: 0, minLevel: 700 },
   { text: "من هو الهداف التاريخي لكأس العالم؟", options: ["رونالدو (البرازيلي)", "ميروسلاف كلوزه", "غيرد مولر", "جاست فونتين"], correct: 1, minLevel: 700 },
   { text: "ما هي الدولة التي استضافت كأس العالم 2022؟", options: ["قطر", "روسيا", "البرازيل", "جنوب أفريقيا"], correct: 0, minLevel: 700 },
-
+  
   // ========== المستوى 4 (خرافي) - نقاط 1000+ ==========
-  // أسئلة إضافية صعبة
   { text: "من هو اللاعب الوحيد الذي لعب في 3 نهائيات مختلفة لكأس العالم مع 3 منتخبات مختلفة؟", options: ["لم يحدث", "مونتيفيديو", "لويس مونتيفيديو", "لا يوجد"], correct: 0, minLevel: 1000 },
   { text: "ما هو النادي الذي هبط من الدوري الإنجليزي الممتاز رغم أنه كان في المركز الرابع في شهر يناير؟", options: ["نورويتش سيتي", "ليدز يونايتد", "نيوكاسل يونايتد", "ساوثهامبتون"], correct: 1, minLevel: 1000 },
   { text: "من هو الحارس الذي تصدى لأكبر عدد من ركلات الجزاء في مباراة واحدة بدوري أبطال أوروبا؟", options: ["أندري شيفتشينكو", "يان أوبلاك", "جيرزي دوديك", "مانويل نوير"], correct: 2, minLevel: 1000 },
@@ -141,9 +137,7 @@ const questionsDatabase = [
   { text: "ما هي الدولة التي فازت بكأس العالم 2014؟", options: ["الأرجنتين", "البرازيل", "ألمانيا", "هولندا"], correct: 2, minLevel: 1000 }
 ];
 
-// ========== نظام اللعبة المتقدم ==========
-// متغيرات اللعبة
-let currentQuestionsPool = [];
+// ===== متغيرات اللعبة =====
 let currentQuestion = null;
 let answered = false;
 let selectedIdx = -1;
@@ -157,7 +151,6 @@ const levelThresholds = [0, 200, 400, 700, 1000];
 const levelNames = ["مبتدئ", "متوسط", "خبير", "أسطورة", "خرافي"];
 const levelIcons = ["🌱", "⚡", "🎯", "👑", "🐉"];
 
-// نظام الأسئلة والقلوب
 const MAX_QUESTIONS = 50;
 let questionsAnswered = 0;
 let hearts = 5;
@@ -166,13 +159,13 @@ let usedQuestions = [];
 let gameOver = false;
 let isWinner = false;
 
-// عناصر DOM
+// ===== عناصر DOM =====
 const questionTextEl = document.getElementById("questionText");
 const optionsContainer = document.getElementById("optionsContainer");
 const feedbackEl = document.getElementById("feedbackMsg");
 const nextBtn = document.getElementById("nextBtn");
 const scoreSpan = document.getElementById("scoreValue");
-const answeredSpan = document.getElementById("correctCount");
+const correctSpan = document.getElementById("correctCount");
 const totalAnsweredSpan = document.getElementById("answeredCount");
 const levelNameSpan = document.getElementById("levelName");
 const xpBar = document.getElementById("xpBar");
@@ -182,20 +175,24 @@ const heartsDisplay = document.getElementById("heartsDisplay");
 const questionCounter = document.getElementById("questionCounter");
 const gameOverOverlay = document.getElementById("gameOverOverlay");
 const gameOverContent = document.getElementById("gameOverContent");
-
-// هامبورغر
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const menuDropdown = document.getElementById("menuDropdown");
 
-// ========== وظائف نظام القلوب ==========
+// إخفاء أزرار تسجيل الدخول (لأننا من غير Supabase)
+const loginBtn = document.getElementById("loginBtn");
+if (loginBtn) loginBtn.style.display = "none";
+const userInfo = document.getElementById("userInfo");
+if (userInfo) userInfo.style.display = "none";
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) logoutBtn.style.display = "none";
+
+// ===== وظائف اللعبة =====
+
 function updateHearts() {
   let heartsHtml = '';
   for (let i = 0; i < MAX_HEARTS; i++) {
-    if (i < hearts) {
-      heartsHtml += '❤️';
-    } else {
-      heartsHtml += '<span class="lost-heart">❤️</span>';
-    }
+    if (i < hearts) heartsHtml += '❤️';
+    else heartsHtml += '<span class="lost-heart">❤️</span>';
   }
   heartsDisplay.innerHTML = heartsHtml;
 }
@@ -203,38 +200,7 @@ function updateHearts() {
 function loseHeart() {
   hearts--;
   updateHearts();
-  if (hearts <= 0) {
-    endGame(false);
-  }
-}
-
-// ========== وظائف نظام الأسئلة ==========
-function getUniqueQuestion() {
-  let available = filterQuestionsByLevel();
-  
-  available = available.filter(q => {
-    const qId = getQuestionId(q);
-    return !usedQuestions.includes(qId);
-  });
-  
-  if (available.length === 0) {
-    usedQuestions = [];
-    available = filterQuestionsByLevel();
-    if (currentQuestion) {
-      const currentId = getQuestionId(currentQuestion);
-      available = available.filter(q => getQuestionId(q) !== currentId);
-    }
-  }
-  
-  if (available.length === 0) {
-    available = questionsDatabase;
-  }
-  
-  const randomIndex = Math.floor(Math.random() * available.length);
-  const question = { ...available[randomIndex] };
-  usedQuestions.push(getQuestionId(question));
-  
-  return question;
+  if (hearts <= 0) endGame(false);
 }
 
 function getQuestionId(question) {
@@ -244,32 +210,37 @@ function getQuestionId(question) {
 function filterQuestionsByLevel() {
   let currentMinLevel = levelThresholds[currentLevel];
   let maxLevel = levelThresholds[currentLevel + 1] || 999999;
-  
   let available = questionsDatabase.filter(q => q.minLevel <= maxLevel);
-  
   let sameLevel = available.filter(q => q.minLevel === currentMinLevel);
-  if (sameLevel.length > 0) {
-    return sameLevel;
-  }
-  
-  if (available.length === 0) {
-    return questionsDatabase;
-  }
+  if (sameLevel.length > 0) return sameLevel;
+  if (available.length === 0) return questionsDatabase;
   return available;
 }
 
-// ========== وظائف اللعبة الأساسية ==========
+function getUniqueQuestion() {
+  let available = filterQuestionsByLevel();
+  available = available.filter(q => !usedQuestions.includes(getQuestionId(q)));
+  if (available.length === 0) {
+    usedQuestions = [];
+    available = filterQuestionsByLevel();
+    if (currentQuestion) {
+      available = available.filter(q => getQuestionId(q) !== getQuestionId(currentQuestion));
+    }
+  }
+  if (available.length === 0) available = questionsDatabase;
+  const randomIndex = Math.floor(Math.random() * available.length);
+  const question = { ...available[randomIndex] };
+  usedQuestions.push(getQuestionId(question));
+  return question;
+}
+
 function updateLevelUI() {
   let newLevel = 0;
   for (let i = levelThresholds.length - 1; i >= 0; i--) {
-    if (totalScore >= levelThresholds[i]) {
-      newLevel = i;
-      break;
-    }
+    if (totalScore >= levelThresholds[i]) { newLevel = i; break; }
   }
   currentLevel = newLevel;
   levelNameSpan.innerHTML = `${levelIcons[currentLevel]} ${levelNames[currentLevel]}`;
-  
   const currentThreshold = levelThresholds[currentLevel];
   const nextThreshold = levelThresholds[currentLevel + 1] || levelThresholds[currentLevel] + 500;
   const xpInLevel = totalScore - currentThreshold;
@@ -277,13 +248,12 @@ function updateLevelUI() {
   const percent = Math.min(100, Math.floor((xpInLevel / neededForNext) * 100));
   xpBar.style.width = `${percent}%`;
   xpText.textContent = `${totalScore - currentThreshold} / ${neededForNext}`;
-  
   difficultyTag.innerHTML = `${levelIcons[currentLevel]} مستوى ${levelNames[currentLevel]} ${levelIcons[currentLevel]}`;
 }
 
 function updateStats() {
   scoreSpan.textContent = totalScore;
-  answeredSpan.textContent = totalCorrect;
+  correctSpan.textContent = totalCorrect;
   totalAnsweredSpan.textContent = totalAnswered;
   updateLevelUI();
 }
@@ -302,47 +272,38 @@ function renderOptions() {
 
 function handleAnswer(selected, btnElement) {
   if (answered || gameOver) {
-    feedbackEl.innerHTML = "⚠️ لقد أجبت مسبقًا! اضغط على 'سؤال جديد'.";
+    feedbackEl.innerHTML = "⚠️ لقد أجبت مسبقًا!";
     return;
   }
-  
   const isCorrect = (selected === currentQuestion.correct);
   answered = true;
   selectedIdx = selected;
   totalAnswered++;
-  
   if (isCorrect) {
     const pointsGain = 10 + Math.floor(currentLevel * 2.5);
     totalScore += pointsGain;
     totalCorrect++;
     questionsAnswered++;
-    
-    feedbackEl.innerHTML = `✅ صحيح! +${pointsGain} نقطة 🎉 (مستوى ${levelNames[currentLevel]})`;
+    feedbackEl.innerHTML = `✅ صحيح! +${pointsGain} نقطة 🎉`;
     feedbackEl.style.color = "#c6ffb7";
   } else {
     feedbackEl.innerHTML = `❌ خطأ! الإجابة الصحيحة: ${String.fromCharCode(65 + currentQuestion.correct)} - ${currentQuestion.options[currentQuestion.correct]}`;
     feedbackEl.style.color = "#ffb7a0";
     loseHeart();
   }
-  
   updateStats();
   updateQuestionCounter();
-  
   const allBtns = document.querySelectorAll(".option-btn");
   allBtns.forEach((btn, i) => {
     btn.disabled = true;
     if (i === currentQuestion.correct) btn.classList.add("correct-highlight");
     if (i === selected && selected !== currentQuestion.correct) btn.classList.add("wrong-highlight");
   });
-  
-  if (questionsAnswered >= MAX_QUESTIONS && !gameOver) {
-    endGame(true);
-  }
+  if (questionsAnswered >= MAX_QUESTIONS && !gameOver) endGame(true);
 }
 
 function loadNewQuestion() {
   if (gameOver) return;
-  
   currentQuestion = getUniqueQuestion();
   questionTextEl.textContent = currentQuestion.text;
   renderOptions();
@@ -358,7 +319,7 @@ function loadNewQuestion() {
 function nextQuestion() {
   if (gameOver) return;
   if (!answered) {
-    feedbackEl.innerHTML = "⚠️ أجب على السؤال أولاً قبل الانتقال!";
+    feedbackEl.innerHTML = "⚠️ أجب على السؤال أولاً!";
     return;
   }
   loadNewQuestion();
@@ -368,46 +329,30 @@ function updateQuestionCounter() {
   questionCounter.textContent = Math.min(questionsAnswered, MAX_QUESTIONS);
 }
 
-// ========== نهاية اللعبة (فوز/خسارة) ==========
 function endGame(win) {
   gameOver = true;
   isWinner = win;
-  
   nextBtn.disabled = true;
   nextBtn.style.opacity = "0.5";
-  
   gameOverOverlay.classList.remove('hidden');
-  
   if (win) {
     gameOverContent.innerHTML = `
       <span class="win-icon">🏆</span>
       <h2>🎉 لقد فزت! 🎉</h2>
-      <p>
-        <strong>مبروك!</strong> لقد أجبت على 50 سؤالاً بنجاح 🥳<br>
-        أنت أسطورة كرة القدم الحقيقية! 🌟<br><br>
-        📞 تواصل معنا للحصول على جائزتك:
-      </p>
-      <a href="https://t.me/zezomira1" target="_blank" class="telegram-link">
-        💬 اضغط هنا للتواصل عبر تليجرام
-      </a>
-      <br>
-      <button class="play-again-btn" onclick="resetGame()">🔄 العب مرة أخرى</button>
+      <p>مبروك! لقد أجبت على 50 سؤالاً بنجاح 🥳<br>أنت أسطورة كرة القدم! 🌟<br><br>📞 تواصل معنا للحصول على جائزتك:</p>
+      <a href="https://t.me/zezomira1" target="_blank" class="telegram-link">💬 اضغط هنا للتواصل عبر تليجرام</a>
+      <br><button class="play-again-btn" onclick="resetGame()">🔄 العب مرة أخرى</button>
     `;
   } else {
     gameOverContent.innerHTML = `
       <span class="lose-icon">💔</span>
       <h2>😢 للأسف... خسرت!</h2>
-      <p>
-        لقد نفذت محاولاتك الخمسة 😔<br>
-        عدد الأسئلة التي أجبت عليها: <strong>${questionsAnswered}</strong>/50<br><br>
-        💪 لا تيأس! حاول مرة أخرى وستفوز إن شاء الله!
-      </p>
+      <p>نفذت محاولاتك الخمسة 😔<br>عدد الأسئلة: <strong>${questionsAnswered}</strong>/50<br><br>💪 حاول مرة أخرى!</p>
       <button class="play-again-btn" onclick="resetGame()">🔄 حاول مرة أخرى</button>
     `;
   }
 }
 
-// ========== إعادة ضبط اللعبة ==========
 function resetGame() {
   totalScore = 0;
   totalAnswered = 0;
@@ -417,8 +362,6 @@ function resetGame() {
   usedQuestions = [];
   gameOver = false;
   isWinner = false;
-  currentLevel = 0;
-  
   gameOverOverlay.classList.add('hidden');
   updateHearts();
   updateStats();
@@ -430,9 +373,12 @@ function resetGame() {
   nextBtn.style.opacity = "1";
 }
 
-// ========== الأحداث ==========
+// ===== الأحداث =====
+
+// زر السؤال التالي
 nextBtn.addEventListener("click", nextQuestion);
 
+// قائمة الهامبرغر
 hamburgerBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   menuDropdown.classList.toggle("hidden");
@@ -444,18 +390,33 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// إجراءات القائمة
 document.querySelectorAll("[data-action]").forEach(link => {
   link.addEventListener("click", (e) => {
-    e.preventDefault();
     const action = link.getAttribute("data-action");
-    if (action === "reset") resetGame();
+    if (action === "reset") { e.preventDefault(); resetGame(); menuDropdown.classList.add('hidden'); }
     if (action === "info") {
-      alert(`🏆 تحدي كأس العالم 2026 🏆\n\n• أجب على 50 سؤالاً للفوز بالجائزة 🎁\n• كل إجابة صحيحة تمنح نقاطاً حسب مستواك\n• لديك 5 محاولات فقط (قلوب) ❤️\n• كل إجابة خاطئة تخسرك قلباً\n• المستويات: مبتدئ → متوسط → خبير → أسطورة → خرافي\n• أكثر من 100 سؤال متنوع\n\n🌍 المكسيك - كندا - الولايات المتحدة 2026`);
+      e.preventDefault();
+      alert(`🏆 تحدي كأس العالم 2026 🏆\n\n• أجب على 50 سؤالاً للفوز 🎁\n• كل إجابة صحيحة تمنح نقاطاً\n• لديك 5 محاولات فقط ❤️\n• كل إجابة خاطئة تخسرك قلباً\n• أكثر من 125 سؤالاً\n\n🌍 المكسيك - كندا - الولايات المتحدة 2026`);
+      menuDropdown.classList.add('hidden');
     }
-    if (action === "credit") alert("📚 الأسئلة مستمدة من ملف '+90.pdf' الذي يحتوي على أكثر من 100 سؤال من جميع المستويات (مبتدئ، متوسط، خبير، أسطورة، خرافي).");
-    menuDropdown.classList.add("hidden");
+    if (action === "credit") {
+      e.preventDefault();
+      alert("📚 الأسئلة مستمدة من ملف '+90.pdf' الذي يحتوي على أكثر من 125 سؤالاً من جميع المستويات.");
+      menuDropdown.classList.add('hidden');
+    }
+    if (action === "leaderboard") {
+      e.preventDefault();
+      alert("🏆 لوحة المتصدرين\n\nهذه الميزة متاحة عند تسجيل الدخول عبر Supabase.\nحالياً اللعبة تعمل بدون حساب.");
+      menuDropdown.classList.add('hidden');
+    }
+    if (action === "logout") {
+      e.preventDefault();
+      menuDropdown.classList.add('hidden');
+    }
   });
 });
 
-// ========== بدء اللعبة ==========
+// ===== بدء اللعبة =====
 resetGame();
+console.log("✅ اللعبة شغالة بنجاح! عدد الأسئلة:", questionsDatabase.length);
