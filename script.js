@@ -1,19 +1,71 @@
-// السطر 1
 // ========== script.js ==========
 
-// السطر 4: رابط موقع اللعبة الرسمي بعد التحديث
-// 🔗 https://ze828282o-afk.github.io/-90/
-
-// 1️⃣ إعدادات الاتصال بـ Supabase (ضع روابط مشروعك هنا)
+// 🔗 رابط موقع اللعبة الرسمي: https://ze828282o-afk.github.io/-90/
+// 1️⃣ إعدادات الاتصال بـ Supabase
 const SUPABASE_URL = "YOUR_SUPABASE_URL"; 
 const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// بيانات Google OAuth الخاصة بك والمربوطة بالرابط الجديد
+// بيانات Google OAuth الخاصة بك والمربوطة برابط الموقع[cite: 1]
 const GOOGLE_CLIENT_ID = "69308373921-j6vv5373sseu2cs1freulromvu2d2k2t.apps.googleusercontent.com";
 
 let currentUser = null; 
-// السطر 12
+
+// 2️⃣ دالة معالجة بيانات جوجل وإرسالها لـ Supabase
+async function handleCredentialResponse(response) {
+    try {
+        // فك تشفير الـ Token القادم من جوجل واجهة برمجية
+        const base64Url = response.credential.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        const googleUser = JSON.parse(jsonPayload);
+        console.log("تم التسجيل بنجاح عبر جوجل:", googleUser);
+
+        // تخزين بيانات اللاعب في متغيرات اللعبة المفتوحة
+        currentUser = {
+            id: googleUser.sub,
+            name: googleUser.name,
+            email: googleUser.email,
+            avatar: googleUser.picture
+        };
+
+        // إخفاء حاوية التسجيل من الواجهة بعد نجاح العملية
+        const authSection = document.getElementById("authSection");
+        if(authSection) authSection.style.display = "none";
+
+        alert(`مرحباً بك يا كابتن ${currentUser.name} في تطبيق +90! ⚽`);
+
+        // حفظ وتحديث بيانات حساب اللاعب في جدول 'players' بـ Supabase
+        const { data, error } = await supabase
+            .from('players')
+            .upsert({ 
+                id: currentUser.id, 
+                name: currentUser.name, 
+                email: currentUser.email,
+                last_login: new Date()
+            });
+            
+        if (error) console.error("فشل الحفظ في قاعدة البيانات:", error);
+
+    } catch (err) {
+        console.error("خطأ غير متوقع أثناء معالجة تسجيل جوجل:", err);
+    }
+}
+
+// 3️⃣ ربط ضغطة زرار جوجل الخارجي بفتح نافذة جوجل تلقائياً
+document.addEventListener("DOMContentLoaded", () => {
+    const customGoogleBtn = document.getElementById("customGoogleBtn");
+    if (customGoogleBtn) {
+        customGoogleBtn.addEventListener("click", () => {
+            google.accounts.id.prompt(); // إطلاق نافذة جوجل المنبثقة برمجياً
+        });
+    }
+});
+
+// =========================================================
 // 1. قاعدة الأسئلة الضخمة (+110 سؤال) مصنفة تصاعدياً حسب المستويات والنقاط
 const questionsDatabase = [
   // المستوى 0 (مبتدئ)
@@ -34,7 +86,7 @@ const questionsDatabase = [
   { text: "من هو النادي الإسباني صاحب الرقم القياسي في دوري أبطال أوروبا؟", options: ["برشلونة", "أتلتيكو مدريد", "ريال مدريد", "فالنسيا"], correct: 2, minLevel: 0 },
   { text: "كم عدد اللاعبين لكل فريق داخل أرضية الملعب؟", options: ["9 لاعبين", "10 لاعبين", "11 لاعباً", "12 لاعباً"], correct: 2, minLevel: 0 },
   { text: "ما هو النادي الإيطالي الذي يرتدي قميصاً باللونين الأحمر والأسود؟", options: ["يوفنتوس", "إنتر ميلان", "إيه سي ميلان", "روما"], correct: 2, minLevel: 0 },
-  { text: "من هو النادي الفائز بالدوري الذهبي في إنجلترا بدون أي خسارة؟", options: ["تشيلسي", "أرسنال", "مانشستر يونايتد", "ليفربول"], correct: 1, minLevel: 0 },
+  { text: "من هو النادي الفائز بالدوري الذهبي في إنجلترا بدون أي خسارة？", options: ["تشيلسي", "أرسنال", "مانشستر يونايتد", "ليفربول"], correct: 1, minLevel: 0 },
   { text: "أين يقع ملعب أولد ترافورد الشهير؟", options: ["لندن", "ليفربول", "مانشستر", "نيوكاسل"], correct: 2, minLevel: 0 },
   { text: "أي من هؤلاء يلعب في مركز حارس المرمى؟", options: ["محمد صلاح", "مانويل نوير", "كيفين دي بروين", "لوكا مودريتش"], correct: 1, minLevel: 0 },
 
@@ -97,7 +149,7 @@ const questionsDatabase = [
   { text: "أي حارس مرمى اشتهر بصدة 'العقرب' الشهيرة عام 1995 ضد إنجلترا؟", options: ["خوسيه تشيلافيرت", "رينيه هيغيتا", "كامبوس", "سيني"], correct: 1, minLevel: 700 },
   { text: "من هو اللاعب الذي سجل أكبر عدد من الأهداف في عام ميلادي واحد (91 هدفاً)؟", options: ["كريستيانو رونالدو", "ليونيل ميسي", "جيرد مولر", "بيليه"], correct: 1, minLevel: 700 },
   { text: "من هو النادي الإنجليزي الأكثر فوزاً بكأس الرابطة (Carabao Cup)؟", options: ["مانشستر يونايتد", "مانشستر سيتي", "ليفربول", "تشيلسي"], correct: 2, minLevel: 700 },
-  { text: "في أي نادٍ لعب الأسطورة زين الدين زيدان قبل انتقاله إلى يوفنتوس؟", options: ["بوردو", "كان", "مارسيليا", "موناكو"], correct: 0, minLevel: 700 },
+  { text: "في أي نادٍ لعب الأسطورة زين الدين زيدان قبل انتقاله إلى يوفنتوس？", options: ["بوردو", "كان", "مارسيليا", "موناكو"], correct: 0, minLevel: 700 },
   { text: "كم عدد ركلات الجزاء التي تصدى لها حارس البرتغال ريكاردو في ركلات ترجيح يورو 2004 ضد إنجلترا؟", options: ["2", "3", "1", "4"], correct: 1, minLevel: 700 },
   { text: "من هو اللاعب التاريخي الذي سجل في 4 بطولات كأس عالم مختلفة؟", options: ["بيليه", "ميروسلاف كلوزه", "كريستيانو رونالدو", "كل ما سبق"], correct: 3, minLevel: 700 },
   { text: "أي دولة أفريقية كانت الأولى على الإطلاق في التأهل لكأس العالم؟", options: ["مصر (1934)", "المغرب", "الكاميرون", "نيجيريا"], correct: 0, minLevel: 700 },
@@ -110,7 +162,7 @@ const questionsDatabase = [
   { text: "من هو الحارس الذي تصدى لأكبر عدد من ركلات الجزاء في نهائي دوري أبطال أوروبا 1986؟", options: ["هيل can", "هيلموت دوقادام", "يوب هانكس", "بافيل نيدفيد"], correct: 1, minLevel: 1000 },
   { text: "أي لاعب فاز بالكرة الذهبية رغم أنه لم يشارك في دوري أبطال أوروبا ذلك الموسم؟", options: ["بافيل نيدفيد", "أندري شيفتشينكو", "جورج ويا", "ماتياس سامر"], correct: 2, minLevel: 1000 },
   { text: "من هو المدرب الوحيد الذي فاز بالدوريات الخمسة الكبرى في مسيرته؟", options: ["كارلو أنشيلوتي", "جوزيه مورينيو", "فابيو كابيلو", "بيب غوارديولا"], correct: 0, minLevel: 1000 },
-  { text: "أي لاعب سجل أكبر عدد من الأهداف في بطولة كأس عالم واحدة (13 هدفاً)؟", options: ["جاست فونتين", "ساندور كوتشيس", "مولر", "كلوزه"], correct: 0, minLevel: 1000 },
+  { text: "أي لاعب سجل أكبر عدد من الأهداف في بطولة كأس عالم واحدة (13 هدفاً)？", options: ["جاست فونتين", "ساندور كوتشيس", "مولر", "كلوزه"], correct: 0, minLevel: 1000 },
   { text: "من هو النادي الأوروبي الذي خسر 5 نهائيات متتالية في دوري أبطال أوروبا؟", options: ["يوفنتوس", "بينفيكا", "بايرن ميونخ", "أتلتيكو مدريد"], correct: 1, minLevel: 1000 },
   { text: "أي لاعب سجل أسرع هاتريك في تاريخ دوري أبطال أوروبا (خلال 7 دقائق)؟", options: ["محمد صلاح", "بافيتيمبي غوميز", "كريستيانو رونالدو", "ليفاندوفسكي"], correct: 0, minLevel: 1000 },
   { text: "من هو اللاعب الأرجنتيني الذي سجل أسرع هدف في تاريخ نهائيات كأس العالم للأندية؟", options: ["محمد أحمد", "روبرتو فيرمينو", "دنيلسون", "دييغو تارديلي"], correct: 2, minLevel: 1000 },
@@ -127,28 +179,25 @@ const questionsDatabase = [
   { text: "من هو اللاعب الذي مرر الكرة لمارادونا في هدف القرن ضد إنجلترا 1986؟", options: ["خورخي بوروتشاغا", "هيكتور إنريكي", "خورخي فالدانو", "أوسكار روجيري"], correct: 1, minLevel: 1000 }
 ];
 
-// توليد باقي الـ 30 سؤالاً الإضافية برمجياً لتأمين البنك بأكثر من 110 سؤال تضمن بقاء التنوع حتى هدف الـ 70
+// توليد باقي الـ 30 سؤالاً الإضافية برمجياً لتأمين البنك
 for (let i = 1; i <= 30; i++) {
-  questionsDatabase.push({
-    text: `سؤال مونديالي إضافي رقم ${i}: ما هو ترتيب بطولة كأس العالم الحالية التي ستقام عام 2026؟`,
-    options: ["النسخة 21", "النسخة 22", "النسخة 23 الكبرى", "النسخة 24"],
-    correct: 2,
-    minLevel: i < 10 ? 200 : (i < 20 ? 400 : 700)
-  });
+   questionsDatabase.push({
+     text: `سؤال مونديالي إضافي رقم ${i}: ما هو ترتيب بطولة كأس العالم التي ستقام في قارة أمريكا عام 2026؟`,
+     options: ["النسخة 21", "النسخة 22", "النسخة 23 الكبرى", "النسخة 24"],
+     correct: 2,
+     minLevel: i < 10 ? 200 : (i < 20 ? 400 : 700)
+   });
 }
 
-// متغيرات اللعبة الأساسية والمحدثة
+// متغيرات اللعبة الأساسية
 let currentQuestion = null;
 let answered = false;
 let selectedIdx = -1;
-
 let totalScore = 0;
 let totalCorrect = 0; 
-let userHearts = 5;  // 5 فرص للفوز
+let userHearts = 5;
 
-// مصفوفة تتبع الأسئلة الملعوبة لمنع التكرار
 let askedQuestions = [];
-
 let currentLevel = 0;
 const levelThresholds = [0, 200, 400, 700, 1000];
 const levelNames = ["مبتدئ", "متوسط", "خبير", "أسطورة", "خرافي"];
@@ -167,34 +216,29 @@ const xpText = document.getElementById("xpText");
 const difficultyTag = document.getElementById("difficultyTag");
 const heartsContainer = document.getElementById("heartsContainer");
 
-// شاشات النهاية المنبثقة
 const endGameOverlay = document.getElementById("endGameOverlay");
 const popupTitle = document.getElementById("popupTitle");
 const popupMessage = document.getElementById("popupMessage");
 const popupActionBtn = document.getElementById("popupActionBtn");
 const popupCard = document.getElementById("popupCard");
 
-// القائمة الجانبية (الهامبرغر)
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const menuDropdown = document.getElementById("menuDropdown");
 
-// دالة رسم قلوب المحاولات المتبقية (❤️ أو 🖤)
 function renderHearts() {
   heartsContainer.innerHTML = "";
   for (let i = 0; i < 5; i++) {
     const heart = document.createElement("span");
-    heart.classList.add("heart-item");
+    heart.style.marginLeft = "3px";
     if (i < userHearts) {
       heart.textContent = "❤️";
     } else {
       heart.textContent = "🖤";
-      heart.classList.add("lost");
     }
     heartsContainer.appendChild(heart);
   }
 }
 
-// تحديث مستويات الـ XP والرتب بدقة منطقية
 function updateLevelUI() {
   let newLevel = 0;
   for (let i = levelThresholds.length - 1; i >= 0; i--) {
@@ -217,62 +261,41 @@ function updateLevelUI() {
   difficultyTag.innerHTML = `🏆 مستوى كاس العالم: ${levelNames[currentLevel]}`;
 }
 
-// تحديث شامل للبيانات والإحصائيات
 function updateStats() {
   scoreSpan.textContent = totalScore;
   correctSpan.textContent = totalCorrect;
   renderHearts();
   updateLevelUI();
   
-  // التحقق الفوري من شرط الفوز الساحق عند بلوغ 70 سؤال صحيح
   if (totalCorrect >= 70) {
     triggerWin();
   }
 }
 
-// دالة الفلترة الصارمة حسب مستوى اللاعب الحالي مع فحص مصفوفة عدم التكرار
 function filterQuestionsByLevel() {
   let currentRequiredMin = levelThresholds[currentLevel];
-  
-  // فلترة الأسئلة التي تطابق الرتبة الحالية وبشرط ألا تكون قد لعبت في الجلسة الحالية
-  let filtered = questionsDatabase.filter(q => {
-    return q.minLevel === currentRequiredMin && !askedQuestions.includes(q.text);
-  });
-  
-  return filtered;
+  return questionsDatabase.filter(q => q.minLevel === currentRequiredMin && !askedQuestions.includes(q.text));
 }
 
-// دالة جلب السؤال عشوائياً بدون مكرر ومع إعادة تدوير ذكية عند النفاد
 function getRandomQuestion() {
   let available = filterQuestionsByLevel();
   
-  // إذا نفدت الأسئلة غير المكررة داخل هذا المستوى، نقوم بتفريغ أسئلة هذا المستوى فقط من المصفوفة لإعادة استخدامها
   if (available.length === 0) {
     let currentRequiredMin = levelThresholds[currentLevel];
     askedQuestions = askedQuestions.filter(text => {
       let originalQ = questionsDatabase.find(q => q.text === text);
       return originalQ ? originalQ.minLevel !== currentRequiredMin : true;
     });
-    
-    // إعادة المحاولة بعد التطهير
     available = filterQuestionsByLevel();
-    
-    // خطة بديلة (Fallback) للتأمين الشامل
-    if (available.length === 0) {
-      available = questionsDatabase;
-    }
+    if (available.length === 0) available = questionsDatabase;
   }
   
   const randomIndex = Math.floor(Math.random() * available.length);
   const selectedQuestion = available[randomIndex];
-  
-  // إضافة نص السؤال المختار حالياً لمنع ظهوره لاحقاً
   askedQuestions.push(selectedQuestion.text);
-  
   return { ...selectedQuestion };
 }
 
-// رسم خيارات الإجابة الأربعة
 function renderOptions() {
   optionsContainer.innerHTML = "";
   currentQuestion.options.forEach((opt, idx) => {
@@ -284,7 +307,6 @@ function renderOptions() {
   });
 }
 
-// التعامل مع نقرة الإجابة وفحص الصحة أو الخصم
 function handleAnswer(selected, btnElement) {
   if (answered) return;
   
@@ -299,14 +321,13 @@ function handleAnswer(selected, btnElement) {
     feedbackEl.innerHTML = `✅ إجابة صحيحة عالمية! +${pointsGain} نقطة 🌟`;
     feedbackEl.style.color = "#2effa4";
   } else {
-    userHearts--; // خصم فرصة/قلب عند الإجابة الخاطئة
+    userHearts--;
     feedbackEl.innerHTML = `❌ إجابة خاطئة! الإجابة الصحيحة هي: ${String.fromCharCode(65 + currentQuestion.correct)} - ${currentQuestion.options[currentQuestion.correct]}`;
     feedbackEl.style.color = "#ff4a4a";
   }
   
   updateStats();
   
-  // تمييز الأزرار بالألوان المناسبة وتعطيل الضغط
   const allBtns = document.querySelectorAll(".option-btn");
   allBtns.forEach((btn, i) => {
     btn.style.pointerEvents = "none";
@@ -314,13 +335,11 @@ function handleAnswer(selected, btnElement) {
     if (i === selected && selected !== currentQuestion.correct) btn.classList.add("wrong-highlight");
   });
 
-  // التحقق من خسارة كافة الفرص الـ 5
   if (userHearts <= 0 && totalCorrect < 70) {
     triggerLose();
   }
 }
 
-// تحميل وتجهيز سؤال جديد تماماً
 function loadNewQuestion() {
   if (userHearts <= 0) return;
   currentQuestion = getRandomQuestion();
@@ -332,7 +351,6 @@ function loadNewQuestion() {
   feedbackEl.style.color = "#e2e8f0";
 }
 
-// الانتقال للسؤال التالي
 function nextQuestion() {
   if (!answered) {
     feedbackEl.innerHTML = "⚠️ يجب عليك الإجابة أولاً قبل الانتقال للسؤال التالي!";
@@ -342,7 +360,6 @@ function nextQuestion() {
   loadNewQuestion();
 }
 
-// كود الفوز والتحويل المباشر إلى تليجرام تلقائياً
 function triggerWin() {
   popupCard.className = "popup-card win-layout";
   popupTitle.textContent = "👑 أسطورة المونديال 2026!";
@@ -350,7 +367,6 @@ function triggerWin() {
   popupActionBtn.textContent = "الانتقال السريع الآن 🚀";
   endGameOverlay.classList.remove("hidden");
   
-  // تحويل تلقائي بعد ثانيتين ونصف
   setTimeout(() => {
     window.location.href = "https://t.me/zezomira1";
   }, 2500);
@@ -360,7 +376,6 @@ function triggerWin() {
   };
 }
 
-// كود الخسارة ونفاذ المحاولات
 function triggerLose() {
   popupCard.className = "popup-card lose-layout";
   popupTitle.textContent = "❌ غادرت البطولة من الأدوار الإقصائية!";
@@ -374,18 +389,16 @@ function triggerLose() {
   };
 }
 
-// تصفير اللعبة بالكامل وبدء تحدي جديد ونظيف
 function resetGame() {
   totalScore = 0;
   totalCorrect = 0;
   userHearts = 5;
   currentLevel = 0;
-  askedQuestions = []; // تصفير مصفوفة منع التكرار تماماً لتبدأ الجلسة من جديد
+  askedQuestions = [];
   updateStats();
   loadNewQuestion();
 }
 
-// ربط أحداث التفاعل والأزرار
 nextBtn.addEventListener("click", nextQuestion);
 hamburgerBtn.addEventListener("click", (e) => {
   e.stopPropagation();
@@ -411,5 +424,5 @@ document.querySelectorAll("[data-action]").forEach(link => {
   });
 });
 
-// إطلاق صافرة بداية المباراة والتشغيل التلقائي الأول
+// إطلاق ركلة البداية للمباراة
 resetGame();

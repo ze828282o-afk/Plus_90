@@ -1,99 +1,260 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>🏆 بطولة +90 المعرفية - كأس العالم 2026</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> +90 - تحدي كأس العالم 2026</title>
+    <!-- مكتبة Supabase الرسمية -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- سكريبت جوجل OAuth الرسمي -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #2effa4;
+            --text-color: #e2e8f0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .hamburger-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background: #334155;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+        .dropdown-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .hidden { display: none !important; }
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .xp-container {
+            background: #334155;
+            border-radius: 6px;
+            height: 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        .xp-bar {
+            background: var(--accent-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .xp-text {
+            position: absolute;
+            right: 5px;
+            top: -2px;
+            font-size: 10px;
+            color: #fff;
+        }
+        .tag {
+            background: #475569;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .question-box {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .option-btn {
+            background: #334155;
+            color: var(--text-color);
+            border: 2px solid transparent;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: right;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .option-btn:hover { background: #475569; }
+        .correct-highlight { background: #065f46 !important; border-color: var(--accent-color) !important; }
+        .wrong-highlight { background: #991b1b !important; border-color: #ff4a4a !important; }
+        .feedback { text-align: center; font-weight: bold; margin-bottom: 15px; }
+        .control-btns { display: flex; justify-content: flex-end; }
+        .next-btn {
+            background: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        /* تصميم زرار جوجل الخارجي والشيك */
+        #customGoogleBtn {
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        #customGoogleBtn:hover { transform: scale(1.02); }
+        /* شاشات النهاية البوب أب */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        .popup-card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 2px solid transparent;
+        }
+        .win-layout { border-color: var(--accent-color); }
+        .lose-layout { border-color: #ff4a4a; }
+        .popup-card h2 { margin-top: 0; }
+        .popup-btn {
+            background: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  
-  <div class="stickers-sidebar sidebar-left">
-    <div class="sticker-card sticker-maple">
-      <div class="sticker-emoji">🔲🔲</div>
-      <div class="sticker-name">Maple</div>
-      <div class="sticker-role">كندا (حارس)</div>
-    </div>
-    <div class="sticker-card sticker-clutch">
-      <div class="sticker-emoji">🔲🔲</div>
-      <div class="sticker-name">Clutch</div>
-      <div class="sticker-role">أمريكا (وسط)</div>
-    </div>
-  </div>
 
-  <div class="game-container">
-    <div class="game-header">
-      <div class="logo-area">
-        <h1>⚽ بطولة +90 المعرفية 🏆</h1>
-        <p>FIFA World Cup 2026 Edition</p>
-      </div>
+    <div class="game-container">
+        <!-- القائمة العلوية -->
+        <header>
+            <h2>تطبيق +90 ⚽</h2>
+            <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+            <div class="dropdown-menu hidden" id="menuDropdown">
+                <a href="#" data-action="reset">🔄 إعادة تحدي جديد</a>
+                <a href="#" data-action="info">ℹ️ قوانين البطولة</a>
+                <a href="#" data-action="credit">📢 حول التطبيق</a>
+            </div>
+        </header>
 
-      <div id="googleBtnHeader" style="min-width: 150px;"></div>
-
-      <div class="hamburger-menu">
-        <div class="hamburger-icon" id="hamburgerBtn">
-          <span></span><span></span><span></span>
+        <!-- قسم تسجيل الدخول بجوجل بره وفوق الأسئلة -->
+        <div id="authSection" style="text-align: center; margin-bottom: 25px;">
+            <button id="customGoogleBtn">
+                <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/web-24dp/logo_googleg_color_24dp.png" alt="Google" style="width: 20px;">
+                تسجيل الدخول بواسطة Google 🚀
+            </button>
+            <div id="g_id_onload"
+                 data-client_id="69308373921-j6vv5373sseu2cs1freulromvu2d2k2t.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
         </div>
-        <div class="dropdown-menu hidden" id="menuDropdown">
-          <a href="#" id="googleMenuBtn">🔑 دخول سريع بجوجل</a>
-          <a href="#" data-action="reset">🔄 بدء من جديد</a>
-          <a href="#" data-action="info">📊 عن اللعبة</a>
-          <a href="#" data-action="credit">📜 المصدر والائتمان</a>
+
+        <!-- الإحصائيات والقلوب -->
+        <div class="stats-bar">
+            <div>النقاط: <span id="scoreValue">0</span></div>
+            <div>الإجابات الصحيحة: <span id="correctCount">0</span> / 70</div>
+            <div id="heartsContainer"></div>
         </div>
-      </div>
+
+        <!-- شريط الرتبة والـ XP -->
+        <div class="xp-container">
+            <div class="xp-bar" id="xpBar"></div>
+            <span class="xp-text" id="xpText">0 / 200</span>
+        </div>
+        <div class="tag" id="difficultyTag">🏆 مستوى كاس العالم: مبتدئ</div>
+        <span style="float: left; font-size: 13px;" id="levelName">🌱 مبتدئ</span>
+
+        <div style="clear: both; margin-bottom: 15px;"></div>
+
+        <!-- صندوق السؤال والخيارات -->
+        <div class="question-box" id="questionText">جاري تحميل ركلة البداية...</div>
+        <div class="options-grid" id="optionsContainer"></div>
+
+        <!-- رسائل التأكيد -->
+        <div class="feedback" id="feedbackMsg">⚽ ركز جيداً في السؤال وحافظ على قلوبك للوصول لـ 70!</div>
+
+        <!-- أزرار التحكم -->
+        <div class="control-btns">
+            <button class="next-btn" id="nextBtn">السؤال التالي ➡️</button>
+        </div>
     </div>
 
-    <div class="level-progress">
-      <div class="target-badge" style="background: #ffcd4a20; padding: 5px 15px; border-radius: 20px; font-weight: bold; color: #ffcd4a;">
-        🎯 الهدف: 70/70
-      </div>
-
-      <div class="hearts-container" id="heartsContainer" style="display: flex; gap: 5px; font-size: 1.2rem;">
-        ❤️ ❤️ ❤️ ❤️ ❤️
-      </div>
-
-      <div class="xp-bar-container">
-        <div class="xp-bar" id="xpBar" style="width: 0%"></div>
-        <span class="xp-text" id="xpText">200 / 0</span>
-      </div>
-
-      <div class="level-badge">
-        <span class="level-icon">🏅</span>
-        <span class="level-name" id="levelName">مبتدئ</span>
-      </div>
-
-      <div class="stats-compact">
-        <span>⭐ <span id="scoreValue">0</span></span>
-        <span>🎯 الإجابات: <span id="correctCount">0</span></span>
-      </div>
+    <!-- شاشات النهاية المنبثقة (Popups) -->
+    <div class="overlay hidden" id="endGameOverlay">
+        <div class="popup-card" id="popupCard">
+            <h2 id="popupTitle">العنوان</h2>
+            <p id="popupMessage">الرسالة</p>
+            <button class="popup-btn" id="popupActionBtn">الزر التفاعلي</button>
+        </div>
     </div>
 
-    <div class="quiz-card" id="quizCard">
-      <div class="difficulty-tag" id="difficultyTag">📘 مستوى كأس العالم: مبتدئ</div>
-      <div class="question-text" id="questionText">جاري التحميل...</div>
-      <div class="options" id="optionsContainer"></div>
-      <div class="feedback" id="feedbackMsg">✨ اختر الإجابة الصحيحة لتبدأ التحدي</div>
-      <button class="next-btn" id="nextBtn">▶ سؤال جديد</button>
-    </div>
-    <footer>💡 تطبيق +90 المطور سحابياً عبر سوبابيس</footer>
-  </div>
-
-  <div class="stickers-sidebar sidebar-right">
-    <div class="sticker-card sticker-zayu">
-      <div class="sticker-emoji">🔲🔲</div>
-      <div class="sticker-name">Zayu</div>
-      <div class="sticker-role">المكسيك (هجوم)</div>
-    </div>
-    <div class="sticker-neon-badge" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border: 2px solid #fff; border-radius: 20px; padding: 10px; text-align: center; font-weight: bold; margin-top: 15px;">
-      WE ARE 26 ⚽
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <!-- ربط ملف الـ JavaScript المطور -->
+    <script src="script.js"></script>
 </body>
 </html>
