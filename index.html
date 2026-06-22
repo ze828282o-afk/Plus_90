@@ -6,6 +6,9 @@
   <title>🏆 بطولة +90 المعرفية - كأس العالم 2026</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
@@ -16,7 +19,6 @@
       <div class="sticker-name">Maple</div>
       <div class="sticker-role">كندا (حارس)</div>
     </div>
-    
     <div class="sticker-card sticker-clutch">
       <div class="sticker-emoji">⚙️</div>
       <div class="sticker-name">Clutch</div>
@@ -38,10 +40,10 @@
           <span></span><span></span><span></span>
         </div>
         <div class="dropdown-menu hidden" id="menuDropdown">
-          <a href="#" id="googleMenuBtn" data-action="google-login">🔑 تسجيل دخول بجوجل</a>
+          <a href="#" id="googleMenuBtn" data-action="google-login">🔑 دخول سريع بجوجل</a>
           <a href="#" data-action="reset">🔄 بدء من جديد</a>
           <a href="#" data-action="info">📊 عن اللعبة</a>
-          <a href="#" data-action="credit">📜 المصدر: PDF الأسئلة</a>
+          <a href="#" data-action="credit">📜 المصدر والائتمان</a>
         </div>
       </div>
     </div>
@@ -62,7 +64,7 @@
       <div class="stats-compact">
         <span>⭐ النتيجة: <span id="scoreValue">0</span></span>
         <span>🎯 الإجابات: <span id="correctCount">0</span></span>
-        <span class="target-badge">🎯 الهدف: 70/70</span>
+        <span class="target-badge">🎯 الهدف: 70</span>
       </div>
     </div>
 
@@ -70,11 +72,11 @@
       <div class="difficulty-tag" id="difficultyTag">🏆 مستوى كأس العالم: مبتدئ</div>
       <div class="question-text" id="questionText">جاري التحميل...</div>
       <div class="options" id="optionsContainer"></div>
-      <div class="feedback" id="feedbackMsg">⚽ ركز جيداً في السؤال وحافظ على قلوبك للوصول لـ 70!</div>
+      <div class="feedback" id="feedbackMsg">⚽ سجل دخولك بجوجل لحفظ نقاطك وتحدي أصدقائك!</div>
       <button class="next-btn" id="nextBtn">▶ سؤال جديد</button>
     </div>
     
-    <footer>💡 أسئلة من موسوعة دوري الأبطال - كأس العالم - نظام المستويات التصاعدية</footer>
+    <footer>💡 تطبيق +90 المطور سحابياً عبر سوبابيس</footer>
   </div>
 
   <div class="stickers-sidebar sidebar-right">
@@ -83,10 +85,7 @@
       <div class="sticker-name">Zayu</div>
       <div class="sticker-role">المكسيك (هجوم)</div>
     </div>
-    
-    <div class="sticker-neon-badge">
-      WE ARE 26 ⚽
-    </div>
+    <div class="sticker-neon-badge">WE ARE 26 ⚽</div>
   </div>
 
   <div id="endGameOverlay" class="end-game-overlay hidden">
