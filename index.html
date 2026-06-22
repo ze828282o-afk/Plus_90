@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>🏆 بطولة +90 المعرفية - كأس العالم 2026</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <div class="stickers-sidebar sidebar-left">
+    <div class="sticker-card sticker-maple">
+      <div class="sticker-emoji">🍁</div>
+      <div class="sticker-name">Maple</div>
+      <div class="sticker-role">كندا (حارس)</div>
+    </div>
+    
+    <div class="sticker-card sticker-clutch">
+      <div class="sticker-emoji">⚙️</div>
+      <div class="sticker-name">Clutch</div>
+      <div class="sticker-role">أمريكا (وسط)</div>
+    </div>
+  </div>
+
+  <div class="game-container">
+    <div class="game-header">
+      <div class="logo-area">
+        <h1>⚽ بطولة +90 المعرفية 🏆</h1>
+        <p>FIFA World Cup 2026 Edition</p>
+      </div>
+      
+      <div id="googleBtnHeader" class="google-header-btn"></div>
+
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" id="hamburgerBtn">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="dropdown-menu hidden" id="menuDropdown">
+          <a href="#" id="googleMenuBtn" data-action="google-login">🔑 تسجيل دخول بجوجل</a>
+          <a href="#" data-action="reset">🔄 بدء من جديد</a>
+          <a href="#" data-action="info">📊 عن اللعبة</a>
+          <a href="#" data-action="credit">📜 المصدر: PDF الأسئلة</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-progress">
+      <div class="level-badge">
+        <span class="level-icon">🏅</span>
+        <span class="level-name" id="levelName">مبتدئ</span>
+      </div>
+      
+      <div class="xp-bar-container">
+        <div class="xp-bar" id="xpBar" style="width: 0%"></div>
+        <span class="xp-text" id="xpText">0 / 200</span>
+      </div>
+
+      <div class="hearts-container" id="heartsContainer"></div>
+      
+      <div class="stats-compact">
+        <span>⭐ النتيجة: <span id="scoreValue">0</span></span>
+        <span>🎯 الإجابات: <span id="correctCount">0</span></span>
+        <span class="target-badge">🎯 الهدف: 70/70</span>
+      </div>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="difficulty-tag" id="difficultyTag">🏆 مستوى كأس العالم: مبتدئ</div>
+      <div class="question-text" id="questionText">جاري التحميل...</div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="feedback" id="feedbackMsg">⚽ ركز جيداً في السؤال وحافظ على قلوبك للوصول لـ 70!</div>
+      <button class="next-btn" id="nextBtn">▶ سؤال جديد</button>
+    </div>
+    
+    <footer>💡 أسئلة من موسوعة دوري الأبطال - كأس العالم - نظام المستويات التصاعدية</footer>
+  </div>
+
+  <div class="stickers-sidebar sidebar-right">
+    <div class="sticker-card sticker-zayu">
+      <div class="sticker-emoji">🌵</div>
+      <div class="sticker-name">Zayu</div>
+      <div class="sticker-role">المكسيك (هجوم)</div>
+    </div>
+    
+    <div class="sticker-neon-badge">
+      WE ARE 26 ⚽
+    </div>
+  </div>
+
+  <div id="endGameOverlay" class="end-game-overlay hidden">
+    <div id="popupCard" class="popup-card">
+      <h2 id="popupTitle">النهاية</h2>
+      <p id="popupMessage">الرسالة تظهر هنا...</p>
+      <button id="popupActionBtn" class="popup-btn">زر الإجراء</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

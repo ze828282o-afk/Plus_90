@@ -1,0 +1,385 @@
+/* ========== style.css ========== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* ألوان كأس العالم 2026 الرسمية: كحلي داكن عميق مع خلفية رياضية حركية */
+  background: radial-gradient(circle at center, #11174b 0%, #060924 100%);
+  font-family: 'Tajawal', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 20px;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* التمائم على الجوانب */
+.mascot-side {
+  position: fixed;
+  top: 15%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 150px;
+  z-index: 10;
+}
+.left-mascot { left: 30px; }
+.right-mascot { right: 30px; }
+
+.mascot-card {
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 24px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  transition: transform 0.3s;
+}
+.mascot-card:hover {
+  transform: translateY(-5px) scale(1.03);
+}
+.mascot-avatar {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 5px;
+}
+.mascot-card h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 3px;
+}
+.mascot-card p {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* ألوان ثيمات التمائم الثلاثة */
+.red-theme { border: 2px solid #ef4444; color: #fca5a5; }
+.blue-theme { border: 2px solid #3b82f6; color: #93c5fd; }
+.green-theme { border: 2px solid #22c55e; color: #86efac; }
+
+.mascot-announcement {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  padding: 12px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+}
+
+/* الحاوية الرئيسية للعبة */
+.game-container {
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(10, 15, 48, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 36px;
+  padding: 25px 25px 35px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  position: relative;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
+  margin-bottom: 20px;
+}
+
+.logo-area h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #3b82f6, #38bdf8, #22c55e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.logo-area p {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* شريط القلوب والهدف */
+.game-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 12px 20px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.hearts-container {
+  display: flex;
+  gap: 6px;
+  font-size: 1.4rem;
+}
+.heart-item {
+  transition: transform 0.2s;
+}
+.heart-item.lost {
+  opacity: 0.3;
+  transform: scale(0.85);
+}
+.target-badge {
+  background: #f59e0b;
+  color: #0f172a;
+  padding: 5px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* شريط الخبرة والمستويات */
+.level-progress {
+  background: rgba(7, 11, 34, 0.9);
+  border-radius: 20px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.level-badge {
+  background: rgba(59, 130, 246, 0.15);
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+.xp-bar-container {
+  flex: 1;
+  background: #1e293b;
+  border-radius: 10px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.xp-bar {
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  width: 0%;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.xp-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+.stats-compact {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #e2e8f0;
+}
+
+/* الكارد المركزي للسؤال */
+.quiz-card {
+  background: rgba(30, 41, 59, 0.4);
+  border-radius: 28px;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.difficulty-tag {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+.question-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.5;
+  margin-bottom: 25px;
+  background: #090d2a;
+  padding: 22px;
+  border-radius: 20px;
+  text-align: center;
+  border-left: 5px solid #3b82f6;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.option-btn {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px 20px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: right;
+  color: #f1f5f9;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.option-btn:hover {
+  background: #334155;
+  border-color: #3b82f6;
+  transform: translateX(-3px);
+}
+.option-btn.correct-highlight {
+  background: #047857 !important;
+  border-color: #34d399 !important;
+  color: #fff;
+}
+.option-btn.wrong-highlight {
+  background: #be123c !important;
+  border-color: #fb7185 !important;
+  text-decoration: line-through;
+}
+
+.feedback {
+  margin-top: 20px;
+  padding: 14px;
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 16px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.next-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: none;
+  padding: 15px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  border-radius: 16px;
+  width: 100%;
+  color: #fff;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+.next-btn:active {
+  transform: scale(0.99);
+}
+
+/* زر الهامبورغر */
+.hamburger-icon {
+  width: 40px;
+  height: 40px;
+  background: #1e293b;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.hamburger-icon span {
+  width: 20px;
+  height: 2px;
+  background: #f1f5f9;
+}
+.dropdown-menu {
+  position: absolute;
+  left: 25px;
+  top: 75px;
+  background: #0f172a;
+  width: 200px;
+  border-radius: 16px;
+  padding: 8px 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  z-index: 100;
+}
+.dropdown-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.dropdown-menu a:hover {
+  background: #1e293b;
+}
+.hidden { display: none !important; }
+
+/* شاشات بوب أب (النهاية) */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(2, 6, 23, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 20px;
+}
+.popup-card {
+  max-width: 460px;
+  width: 100%;
+  border-radius: 28px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+.win-layout {
+  background: linear-gradient(145deg, #062817 0%, #020f08 100%);
+  border: 3px solid #10b981;
+}
+.lose-layout {
+  background: linear-gradient(145deg, #3c0f16 0%, #1a0508 100%);
+  border: 3px solid #f43f5e;
+}
+.popup-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+.popup-card p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+.popup-btn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 14px;
+  cursor: pointer;
+  width: 100%;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.75rem;
+  margin-top: 20px;
+  opacity: 0.5;
+}
+
+/* جعل المظهر متجاوب بالكامل مع الشاشات والموبايل */
+@media (max-width: 1100px) {
+  .mascot-side { display: none; } /* إخفاء التمائم على الهواتف والأجهزة المتوسطة لعدم تغطية الأسئلة */
+}
+@media (max-width: 600px) {
+  .game-container { padding: 15px; border-radius: 24px; }
+  .question-text { font-size: 1.15rem; padding: 15px; }
+  .option-btn { font-size: 0.9rem; padding: 12px 15px; }
+}
